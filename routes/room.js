@@ -26,13 +26,37 @@ router.post('/', function(req, res, next) {
 })
 
 router.get('/:roomId', function(req, res, next) {
-  if (!(req.params.roomId in room)) {
+  var roomId = req.params.roomId
+  var room = rooms[roomId]
+
+  if (!room) {
     var err = new Error('Not Found');
     err.status = 404;
     return next(err)
   }
 
-  res.render('room', { room: room[req.params.roomId]});
+  var player = room.players[req.session.id]
+
+  res.render('room', {room, player, roomId});
+});
+
+router.post('/:roomId', function(req, res, next) {
+  var roomId = req.params.roomId
+  var room = rooms[req.params.roomId]
+  if (!room) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    return next(err)
+  }
+
+  room.players[req.session.id] = {
+    name: req.body.username,
+    leader: false
+  }
+
+  var player = room.players[req.session.id]
+
+  res.render('room', {room, player, roomId});
 });
 
 module.exports = router;

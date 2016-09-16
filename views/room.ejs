@@ -6,6 +6,21 @@
     <link rel="stylesheet" href="/stylesheets/index.css" />
   </head>
   <body>
-    <h2>Hello, <%= room.username %></h2>
+    <h1>Room <%= roomId %></h1>
+    <h2>Hello, <%= player ? player.name : '' %></h2>
+    <% if (player) { %>
+      <p>Waiting for players...</p>
+      <p><%= Object.keys(room.players).length %> players in your room %></p>
+      <% if (player.leader) { %>
+        <button>Start Game</button>
+      <% } %>
+    <% }
+    else { %>
+      <form method="post">
+        <label for="name">Please give us your name:&nbsp;&nbsp;&nbsp;</label>
+        <input type="text" placeholder="My Name" name="username" />
+        <button type="submit">Join Room</button>
+      </form>
+    <% } %>
   </body>
 </html>
