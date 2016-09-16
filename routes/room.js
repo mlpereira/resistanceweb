@@ -1,17 +1,28 @@
 var express = require('express');
 var router = express.Router();
 
-var room = {
-  '1': {
-    name: 'ola'
+var rooms = {}
+
+function Room(sessionid, name) {
+  var players = {}
+  players[sessionid] = {
+    name: name,
+    leader: true
+  }
+  return {
+    players: players
   }
 }
 
-router.post('/:roomId', function(req, res, next) {
-  room[req.params.roomId] = {
-    username: req.body.username
+router.post('/', function(req, res, next) {
+  do {
+    var roomId = Math.floor((Math.random() * 100000) + 1);
   }
-  res.redirect('/room/' + req.params.roomId)
+  while(rooms[roomId] != undefined)
+
+  rooms[roomId] = Room(req.session.id, req.body.username)
+
+  res.redirect('/room/' + roomId)
 })
 
 router.get('/:roomId', function(req, res, next) {
