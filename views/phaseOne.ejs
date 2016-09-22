@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Resistance Web</title>
+    <link rel="stylesheet" href="/stylesheets/index.css" />
+  </head>
+  <body>
+    <h1>You are <%= (player.isLoyal ? 'Loyal' : 'a Spy') %>! %></h1>
+    <% if (!player.isLoyal) { %>
+      <h2>The other spies are:</h2>
+      <ul>
+      <% for (var key in room.players) { %>
+        <% if (!room.players[key].isLoyal) %>
+          <li><%= room.players[key].name %></li>
+      <% } %>
+      </ul>
+    <% } %>
+
+  </body>
+</html>
