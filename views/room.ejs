@@ -14,20 +14,24 @@
         <input type="text" placeholder="My Name" name="username" />
         <button type="submit">Join Room</button>
       </form>
-    <% } %>
-
+    <% } else { %>
+      <h3>You are logged in as <%= player.name %></h3>
+      <% if (player == room.owner) { %>
+        <form action=<%= room.id + "/startGame" %> method="post">
+          <button type="submit">Start Game</button>
+        </form>
+        <form action=<%= room.id + "/addBots" %> method="post">
+          <button type="submit">Add Bots</button>
+        </form>
+      <% } %>
+    <% }%>
 
     <h2>Participants(<%= Object.keys(room.players).length %>): %></h2>
     <ul>
-    <% for (var key in room.players) { %>
-        <li><%= room.players[key].name %></li>
+    <% for (var i=0; i<room.players.length; i++) { %>
+        <li><%= room.players[i].name %></li>
     <% } %>
     </ul>
-    <% if (player && player.id == room.owner) { %>
-      <form action=<%= room.id + "/startGame" %> method="post">
-        <button type="submit">Start Game</button>
-      </form>
-    <% } %>
 
   </body>
 </html>

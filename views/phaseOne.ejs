@@ -10,9 +10,10 @@
     <% if (!player.isLoyal) { %>
       <h2>The other spies are:</h2>
       <ul>
-      <% for (var key in room.players) { %>
-        <% if (!room.players[key].isLoyal) %>
-          <li><%= room.players[key].name %></li>
+      <% for (var i=0; i<room.players.length; i++) { %>
+        <% if (!room.players[i].isLoyal && room.players[i].id != player.id) { %>
+          <li><%= room.players[i].name %></li>
+        <% } %>
       <% } %>
       </ul>
     <% } %>
