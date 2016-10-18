@@ -14,6 +14,7 @@ function Room(id, player) {
   this.players = [];
   this.players.push(player);
   this.phase = 0;
+  this.missions = [];
   this.getPlayer = function(playerId){
     for(var i=0; i<this.players.length; i++){
       if (this.players[i].id == playerId)
@@ -21,17 +22,26 @@ function Room(id, player) {
       return false;
     }
   };
+  this.getCurrentMission = function(){
+    return this.missions[this.currentMissionIndex];
+  }
+  this.getCurrentLeader = function(){
+    return this.getCurrentMission().leader;
+  }
+}
+
+function Mission(leader){
+  this.leader = leader;
 }
 
 function getRoom(req, res, next){
-  var roomId = req.params.roomId;
-  var room = rooms[roomId];
-
+  var room = rooms[req.params.roomId];
   if (!room) {
     var err = new Error('Not Found');
     err.status = 404;
     return next(err);
   }
+
   var player = room.getPlayer(req.session.id);
   switch (room.phase) {
     case 0:
@@ -40,12 +50,14 @@ function getRoom(req, res, next){
   case 1:
       res.render('phaseOne', {room, player});
       break;
+  case 2:
+      res.render('phaseTwo', {room, player});
   }
 }
 
 function createRoom(req, res, next){
   do {
-    var roomId = 10; //Math.floor((Math.random() * 100000) + 1);
+    var roomId = 10 + Object.keys(rooms).length; //Math.floor((Math.random() * 100000) + 1);
   } while(rooms[roomId] != undefined)
   var player = new Player(req.session.id, req.body.username);
   rooms[roomId] = new Room(roomId, player);
@@ -77,13 +89,25 @@ function startGame(req, res, next){
 
   room.phase = 1;
   assignRoles(room.players);
+  room.currentLeaderIndex = 0; //Random
+  var firstLeader = room.players[room.currentLeaderIndex];
+  room.missions.push(new Mission(firstLeader));
+  room.currentMissionIndex = 0;
   res.redirect('/room/' + room.id);
 }
 
 function assignRoles(players){
   for (var i=0; i<players.length; i++){
-    players[i].isLoyal = (i % 2 == 0 ? true : false);
+    players[i].isLoyal = (i % 2 == 0);
   }
+}
+
+function selectAgents(req, res, next){
+  var room = rooms[req.params.roomId];
+  room.phase = 2;
+  room.getCurrentMission().agents = req.body.agents;
+
+  res.redirect('/room/' + room.id);
 }
 
 function addBots(req, res, next){
@@ -100,6 +124,7 @@ router.get('/:roomId', getRoom);
 router.post('/', createRoom);
 router.post('/:roomId/joinRoom', joinRoom);
 router.post('/:roomId/startGame', startGame);
+router.post('/:roomId/selectAgents', selectAgents);
 router.post('/:roomId/addBots', addBots);
 
 module.exports = router;

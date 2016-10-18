@@ -6,16 +6,22 @@
     <link rel="stylesheet" href="/stylesheets/index.css" />
   </head>
   <body>
-    <h1>You are <%= (player.isLoyal ? 'Loyal' : 'a Spy') %>! %></h1>
-    <% if (!player.isLoyal) { %>
-      <h2>The other spies are:</h2>
+
+    <% if (room.getCurrentLeader().id == player.id) { %>
+      <h2>You are the leader</h2>
+      <h3>Select who you want to send</h3>
+      <form action=<%= room.id + "/selectAgents" %> method="post">
       <ul>
-      <% for (var i=0; i<room.players.length; i++) { %>
-        <% if (!room.players[i].isLoyal && room.players[i].id != player.id) { %>
-          <li><%= room.players[i].name %></li>
+        <% for (var i=0; i<room.players.length; i++) { %>
+          <% if (room.players[i] != player) { %>
+            <li><input type="checkbox" name="agents[]" value=<%= i %>><%= room.players[i].name %></li>
+          <% } %>
         <% } %>
-      <% } %>
       </ul>
+      <button type="submit">Confirm Agents</button>
+      </form>
+    <% }  else { %>
+      <h2>Leader <%= room.getCurrentLeader().name %> is choosing who he is going to send</h2>
     <% } %>
 
   </body>

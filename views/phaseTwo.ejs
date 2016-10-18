@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Resistance Web</title>
+    <link rel="stylesheet" href="/stylesheets/index.css" />
+  </head>
+  <body>
+    <h1><%= room.getCurrentMission().leader.name %> selected:</h1>
+    <ul>
+      <% var agents = room.getCurrentMission().agents %>
+      <% for (var i=0; i<agents.length; i++) { %>
+        <li><%= room.players[agents[i]].name %></li>
+      <% } %>
+    </ul>
+    <h2>Do you approve this team?</h2>
+
+  </body>
+</html>
