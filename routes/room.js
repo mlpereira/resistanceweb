@@ -32,6 +32,38 @@ function Room(id, player) {
 
 function Mission(leader){
   this.leader = leader;
+  this.firstTeam = true;
+  this.votes = [];
+  this.countVotes = function(){
+    var count = 0;
+    for (var i = 0; i<this.votes.length; i++){
+      if (this.votes[i].vote){
+        count++;
+      }
+    }
+    return count;
+  }
+  this.getPlayerVote = function(player){
+    for (var i = 0; i<this.votes.length; i++){
+      if (this.votes[i].player.id == player.id){
+        return this.votes[i].vote;
+      }
+    }
+    //THROW EXCEPTION
+  }
+  this.playerHasVoted = function(player){
+    for (var i = 0; i<this.votes.length; i++){
+      if (this.votes[i].player.id == player.id){
+        return true;
+      }
+    }
+    return false;
+  }
+}
+
+function Vote(player, vote){
+  this.player = player;
+  this.vote = (vote == 'yes');
 }
 
 function getRoom(req, res, next){
@@ -110,6 +142,22 @@ function selectAgents(req, res, next){
   res.redirect('/room/' + room.id);
 }
 
+function voteTeam(req, res, next){
+  var room = rooms[req.params.roomId];
+  var player = room.getPlayer(req.session.id);
+  var vote = new Vote(player, req.body.vote);
+  var mission = room.getCurrentMission();
+  mission.votes.push(vote);
+  if(mission.votes.length == room.players.length)
+    if(mission.countVotes() > room.players.length / 2){
+      room.phase = 3;
+    } else{
+      room.phase = 1;
+      mission.firstTeam = false;
+    }
+  res.redirect('/room/' + room.id);
+}
+
 function addBots(req, res, next){
   var room = rooms[req.params.roomId];
   for (var i = 1; i <= 4; i++){
@@ -125,6 +173,7 @@ router.post('/', createRoom);
 router.post('/:roomId/joinRoom', joinRoom);
 router.post('/:roomId/startGame', startGame);
 router.post('/:roomId/selectAgents', selectAgents);
+router.post('/:roomId/voteTeam', voteTeam);
 router.post('/:roomId/addBots', addBots);
 
 module.exports = router;

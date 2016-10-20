@@ -13,9 +13,7 @@
       <form action=<%= room.id + "/selectAgents" %> method="post">
       <ul>
         <% for (var i=0; i<room.players.length; i++) { %>
-          <% if (room.players[i] != player) { %>
-            <li><input type="checkbox" name="agents[]" value=<%= i %>><%= room.players[i].name %></li>
-          <% } %>
+          <li><input type="checkbox" name="agents[]" value=<%= i %>><%= room.players[i].name %></li>
         <% } %>
       </ul>
       <button type="submit">Confirm Agents</button>
