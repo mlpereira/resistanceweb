@@ -1,86 +1,11 @@
 var express = require('express');
 var router = express.Router();
+var Room = require('../models/room');
+var Player = require('../models/player');
+var Mission = require('../models/mission');
+var Vote = require('../models/vote');
 
 var rooms = {};
-
-function Player(id, name){
-  this.id = id;
-  this.name = name;
-}
-
-function Room(id, player) {
-  this.id = id;
-  this.owner = player;
-  this.players = [];
-  this.players.push(player);
-  this.phase = 0;
-  this.missions = [];
-  this.changeLeader = function(){
-    if (this.currentLeaderIndex < this.players.length-1){
-      this.currentLeaderIndex++;
-    } else {
-      this.currentLeaderIndex = 0;
-    }
-    this.getCurrentMission().setNewLeader(this.getCurrentLeader())
-  }
-  this.getPlayer = function(playerId){
-    for(var i=0; i<this.players.length; i++){
-      if (this.players[i].id == playerId)
-        return this.players[i];
-    }
-    return false;
-  };
-  this.getCurrentMission = function(){
-    return this.missions[this.currentMissionIndex];
-  }
-  this.getCurrentLeader = function(){
-    return this.players[this.currentLeaderIndex];
-  }
-}
-
-function Mission(leader){
-  this.leader = leader;
-  this.firstTeam = true;
-  this.votes = [];
-  this.setNewLeader = function(newLeader){
-    this.leader = newLeader;
-    this.firstTeam = false;
-    this.lastAgents = this.agents;
-    this.lastVotes = this.votes;
-    this.agents = [];
-    this.votes = [];
-  }
-  this.countVotes = function(){
-    var count = 0;
-    for (var i = 0; i<this.votes.length; i++){
-      if (this.votes[i].vote){
-        count++;
-      }
-    }
-    return count;
-  }
-  this.getPlayerVote = function(player){
-    for (var i = 0; i<this.votes.length; i++){
-      if (this.votes[i].player.id == player.id){
-        return this.votes[i].vote;
-      }
-    }
-    //THROW EXCEPTION
-  }
-  this.playerHasVoted = function(player){
-    for (var i = 0; i<this.votes.length; i++){
-      if (this.votes[i].player.id == player.id){
-        return true;
-      }
-    }
-    return false;
-  }
-}
-
-function Vote(player, vote){
-  this.player = player;
-  this.vote = (vote == 'yes');
-}
 
 function getRoom(req, res, next){
   var room = rooms[req.params.roomId];
@@ -109,8 +34,8 @@ function createRoom(req, res, next){
   do {
     var roomId = 10 + Object.keys(rooms).length; //Math.floor((Math.random() * 100000) + 1);
   } while(rooms[roomId] != undefined)
-  var player = new Player(req.session.id, req.body.username);
-  rooms[roomId] = new Room(roomId, player);
+  var player = Player.create(req.session.id, req.body.username);
+  rooms[roomId] = Room.create(roomId, player);
 
   res.redirect('/room/' + roomId);
 }
@@ -123,7 +48,7 @@ function joinRoom(req, res, next){
     return next(err);
   }
 
-  var player = new Player(req.session.id, req.body.username);
+  var player = Player.create(req.session.id, req.body.username);
   room.players.push(player);
 
   res.redirect('/room/' + room.id);
@@ -141,7 +66,7 @@ function startGame(req, res, next){
   assignRoles(room.players);
   room.currentLeaderIndex = 0; //Random
   var firstLeader = room.getCurrentLeader();
-  room.missions.push(new Mission(firstLeader));
+  room.missions.push(Mission.create(firstLeader));
   room.currentMissionIndex = 0;
   res.redirect('/room/' + room.id);
 }
@@ -163,7 +88,7 @@ function selectAgents(req, res, next){
 function voteTeam(req, res, next){
   var room = rooms[req.params.roomId];
   var player = room.getPlayer(req.session.id);
-  var vote = new Vote(player, req.body.vote);
+  var vote = Vote.create(player, req.body.vote);
   var mission = room.getCurrentMission();
   mission.votes.push(vote);
   if(mission.votes.length == room.players.length)
@@ -179,7 +104,7 @@ function voteTeam(req, res, next){
 function addBots(req, res, next){
   var room = rooms[req.params.roomId];
   for (var i = 1; i <= 4; i++){
-    var bot = new Player(i, 'BOT'+i);
+    var bot = Player.create(i, 'BOT'+i);
     room.players.push(bot);
   }
   res.redirect('/room/' + room.id);
