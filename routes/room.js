@@ -21,7 +21,7 @@ function Room(id, player) {
     } else {
       this.currentLeaderIndex = 0;
     }
-    this.getCurrentMission().setNewLeader(room.getCurrentLeader())
+    this.getCurrentMission().setNewLeader(this.getCurrentLeader())
   }
   this.getPlayer = function(playerId){
     for(var i=0; i<this.players.length; i++){
