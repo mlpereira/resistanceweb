@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/stylesheets/index.css" />
   </head>
   <body>
+    Player: <%= player.name+' ID: '+player.id+(player.isLoyal ? ' Loyal' : ' Spy') %>
     <% var mission = room.getCurrentMission(); %>
     <h1><%= mission.leader.name %> selected:</h1>
     <ul>

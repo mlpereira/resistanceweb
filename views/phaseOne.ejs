@@ -6,6 +6,23 @@
     <link rel="stylesheet" href="/stylesheets/index.css" />
   </head>
   <body>
+    Player: <%= player.name+' ID: '+player.id+(player.isLoyal ? ' Loyal' : ' Spy') %>
+    <% var mission = room.getCurrentMission(); %>
+    <% if (!mission.firstTeam) { %>
+      <fieldset>
+        <h1>TEAM REJECTED</h1>
+        <h2>Agents: </h2>
+        <% for (var i=0; i<mission.lastAgents.length; i++) { %>
+          <h3><%= room.players[mission.lastAgents[i]].name %></h3>
+        <% } %>
+        <h2>Votes:</h2>
+        <% for (var i=0; i<mission.lastVotes.length; i++) { %>
+          <% var vote = mission.lastVotes[i]; %>
+          <h3><%= vote.player.name %>: <%= (vote.vote ? 'YES' : 'NO') %></h3>
+        <% } %>
+      </fieldset>
+    <% } %>
+
 
     <% if (room.getCurrentLeader().id == player.id) { %>
       <h2>You are the leader</h2>

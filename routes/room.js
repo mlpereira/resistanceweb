@@ -15,18 +15,26 @@ function Room(id, player) {
   this.players.push(player);
   this.phase = 0;
   this.missions = [];
+  this.changeLeader = function(){
+    if (this.currentLeaderIndex < this.players.length-1){
+      this.currentLeaderIndex++;
+    } else {
+      this.currentLeaderIndex = 0;
+    }
+    this.getCurrentMission().setNewLeader(room.getCurrentLeader())
+  }
   this.getPlayer = function(playerId){
     for(var i=0; i<this.players.length; i++){
       if (this.players[i].id == playerId)
         return this.players[i];
-      return false;
     }
+    return false;
   };
   this.getCurrentMission = function(){
     return this.missions[this.currentMissionIndex];
   }
   this.getCurrentLeader = function(){
-    return this.getCurrentMission().leader;
+    return this.players[this.currentLeaderIndex];
   }
 }
 
@@ -34,6 +42,14 @@ function Mission(leader){
   this.leader = leader;
   this.firstTeam = true;
   this.votes = [];
+  this.setNewLeader = function(newLeader){
+    this.leader = newLeader;
+    this.firstTeam = false;
+    this.lastAgents = this.agents;
+    this.lastVotes = this.votes;
+    this.agents = [];
+    this.votes = [];
+  }
   this.countVotes = function(){
     var count = 0;
     for (var i = 0; i<this.votes.length; i++){
@@ -84,6 +100,8 @@ function getRoom(req, res, next){
       break;
   case 2:
       res.render('phaseTwo', {room, player});
+    case 3:
+        res.render('phaseThree', {room, player});
   }
 }
 
@@ -122,7 +140,7 @@ function startGame(req, res, next){
   room.phase = 1;
   assignRoles(room.players);
   room.currentLeaderIndex = 0; //Random
-  var firstLeader = room.players[room.currentLeaderIndex];
+  var firstLeader = room.getCurrentLeader();
   room.missions.push(new Mission(firstLeader));
   room.currentMissionIndex = 0;
   res.redirect('/room/' + room.id);
@@ -152,8 +170,8 @@ function voteTeam(req, res, next){
     if(mission.countVotes() > room.players.length / 2){
       room.phase = 3;
     } else{
+      room.changeLeader();
       room.phase = 1;
-      mission.firstTeam = false;
     }
   res.redirect('/room/' + room.id);
 }
