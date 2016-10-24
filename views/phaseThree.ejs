@@ -19,6 +19,13 @@
         <h3><%= vote.player.name %>: <%= (vote.vote ? 'YES' : 'NO') %></h3>
       <% } %>
     </fieldset>
+    <% if (mission.playerIsOnMission(player)) { %>
+      <h2>Make the mission Succeed or Fail?</h2>
+      <form action=<%= room.id + "/realizeMission" %> method="post">
+        <button type="submit" name="action" value="succeed">SUCCEED</button>
+        <button type="submit" name="action" value="fail">FAIL</button>
+      </form>
+    <% } %>
 
   </body>
 </html>

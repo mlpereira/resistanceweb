@@ -21,9 +21,8 @@
     <% } else { %>
       <h2>Do you approve this team?</h2>
       <form action=<%= room.id + "/voteTeam" %> method="post">
-        <input type="radio" name="vote" value="yes"> Yes <br>
-        <input type="radio" name="vote" value="no"> No <br>
-        <button type="submit">Confirm vote</button>
+        <button type="submit" name="vote" value="yes">Yes</button>
+        <button type="submit" name="vote" value="no">No</button>
       </form>
     <% } %>
 
