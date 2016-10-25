@@ -5,6 +5,7 @@ function Room(id, player) {
   this.players.push(player);
   this.phase = 0;
   this.missions = [];
+
   this.changeLeader = function(){
     if (this.currentLeaderIndex < this.players.length-1){
       this.currentLeaderIndex++;
@@ -13,6 +14,7 @@ function Room(id, player) {
     }
     this.getCurrentMission().setNewLeader(this.getCurrentLeader())
   }
+
   this.getPlayer = function(playerId){
     for(var i=0; i<this.players.length; i++){
       if (this.players[i].id == playerId)
@@ -20,12 +22,15 @@ function Room(id, player) {
     }
     return false;
   };
+
   this.getCurrentMission = function(){
     return this.missions[this.currentMissionIndex];
   }
+
   this.getCurrentLeader = function(){
     return this.players[this.currentLeaderIndex];
   }
+  
 }
 
 exports.create = function(id, player) {

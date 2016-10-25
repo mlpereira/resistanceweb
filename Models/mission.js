@@ -1,40 +1,46 @@
 function Mission(leader){
   this.leader = leader;
   this.firstTeam = true;
-  this.votes = [];
+  this.agents = [];
+  this.votes = {};
+
   this.setNewLeader = function(newLeader){
     this.leader = newLeader;
     this.firstTeam = false;
     this.lastAgents = this.agents;
     this.lastVotes = this.votes;
     this.agents = [];
-    this.votes = [];
+    this.votes = {};
   }
-  this.countVotes = function(){
+
+  this.countApprovals = function(){
     var count = 0;
-    for (var i = 0; i<this.votes.length; i++){
-      if (this.votes[i].vote){
+    for (var vote in this.votes){
+      if (this.votes[vote] == 'yes'){
         count++;
       }
     }
     return count;
   }
+
   this.getPlayerVote = function(player){
-    for (var i = 0; i<this.votes.length; i++){
-      if (this.votes[i].player.id == player.id){
-        return this.votes[i].vote;
-      }
-    }
+    return this.votes[player.id];
     //THROW EXCEPTION
   }
+
   this.playerHasVoted = function(player){
-    for (var i = 0; i<this.votes.length; i++){
-      if (this.votes[i].player.id == player.id){
+    return this.votes.hasOwnProperty(player.id);
+  }
+
+  this.playerIsOnMission = function(player){
+    for(var i=0; i<this.agents.length; i++){
+      if (this.agents[i].id == player.id){
         return true;
       }
     }
     return false;
-  }
+  };
+
 }
 
 exports.create = function(leader) {

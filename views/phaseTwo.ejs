@@ -12,11 +12,11 @@
     <ul>
       <% var agents = mission.agents %>
       <% for (var i=0; i<agents.length; i++) { %>
-        <li><%= room.players[agents[i]].name %></li>
+        <li><%= agents[i].name %></li>
       <% } %>
     </ul>
     <% if (mission.playerHasVoted(player)) { %>
-      <h1>You <%= (mission.getPlayerVote(player) ? 'Approved' : 'Rejected') %> this team</h1>
+      <h1>You <%= (mission.getPlayerVote(player)=='yes' ? 'Approved' : 'Rejected') %> this team</h1>
       <h2>Waiting other players' votes</h2>
     <% } else { %>
       <h2>Do you approve this team?</h2>

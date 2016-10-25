@@ -3,7 +3,6 @@ var router = express.Router();
 var Room = require('../models/room');
 var Player = require('../models/player');
 var Mission = require('../models/mission');
-var Vote = require('../models/vote');
 
 var rooms = {};
 
@@ -25,8 +24,10 @@ function getRoom(req, res, next){
       break;
   case 2:
       res.render('phaseTwo', {room, player});
-    case 3:
-        res.render('phaseThree', {room, player});
+      break;
+  case 3:
+      res.render('phaseThree', {room, player});
+      break;
   }
 }
 
@@ -80,7 +81,10 @@ function assignRoles(players){
 function selectAgents(req, res, next){
   var room = rooms[req.params.roomId];
   room.phase = 2;
-  room.getCurrentMission().agents = req.body.agents;
+  for (var i = 0; i<req.body.agents.length; i++){
+    var agent = room.players[req.body.agents[i]];
+    room.getCurrentMission().agents.push(agent);
+  }
 
   res.redirect('/room/' + room.id);
 }
@@ -88,13 +92,12 @@ function selectAgents(req, res, next){
 function voteTeam(req, res, next){
   var room = rooms[req.params.roomId];
   var player = room.getPlayer(req.session.id);
-  var vote = Vote.create(player, req.body.vote);
   var mission = room.getCurrentMission();
-  mission.votes.push(vote);
-  if(mission.votes.length == room.players.length)
-    if(mission.countVotes() > room.players.length / 2){
+  mission.votes[player.id] = req.body.vote;
+  if(Object.keys(mission.votes).length == room.players.length)
+    if(mission.countApprovals() > room.players.length / 2){
       room.phase = 3;
-    } else{
+    } else {
       room.changeLeader();
       room.phase = 1;
     }
