@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Resistance Web</title>
+    <link rel="stylesheet" href="/stylesheets/index.css" />
+  </head>
+  <body>
+    <% var mission = room.getCurrentMission(); %>
+    <fieldset>
+      <h1>TEAM APPROVED</h1>
+      <h2>Agents: </h2>
+      <% for (var i=0; i<mission.agents.length; i++) { %>
+        <h3><%= room.players[mission.agents[i]].name %></h3>
+      <% } %>
+      <h2>Votes:</h2>
+      <% for (var i=0; i<mission.votes.length; i++) { %>
+        <% var vote = mission.votes[i]; %>
+        <h3><%= vote.player.name %>: <%= (vote.vote ? 'YES' : 'NO') %></h3>
+      <% } %>
+    </fieldset>
+    <% if (mission.playerIsOnMission(player)) { %>
+      <h2>Make the mission Succeed or Fail?</h2>
+      <form action=<%= room.id + "/realizeMission" %> method="post">
+        <button type="submit" name="action" value="succeed">SUCCEED</button>
+        <button type="submit" name="action" value="fail">FAIL</button>
+      </form>
+    <% } %>
+
+  </body>
+</html>
