@@ -6,17 +6,18 @@
     <link rel="stylesheet" href="/stylesheets/index.css" />
   </head>
   <body>
+    Player: <%= player.name+' ID: '+player.id+(player.isLoyal ? ' Loyal' : ' Spy') %>
     <% var mission = room.getCurrentMission(); %>
     <fieldset>
       <h1>TEAM APPROVED</h1>
       <h2>Agents: </h2>
       <% for (var i=0; i<mission.agents.length; i++) { %>
-        <h3><%= room.players[mission.agents[i]].name %></h3>
+        <h3><%= mission.agents[i].name %></h3>
       <% } %>
       <h2>Votes:</h2>
-      <% for (var i=0; i<mission.votes.length; i++) { %>
-        <% var vote = mission.votes[i]; %>
-        <h3><%= vote.player.name %>: <%= (vote.vote ? 'YES' : 'NO') %></h3>
+      <% for (var i=0; i<room.players.length; i++) { %>
+        <% var p = room.players[i]; %>
+        <h3><%= p.name+" "+mission.votes[p.id] %></h3>
       <% } %>
     </fieldset>
     <% if (mission.playerIsOnMission(player)) { %>
@@ -25,6 +26,8 @@
         <button type="submit" name="action" value="succeed">SUCCEED</button>
         <button type="submit" name="action" value="fail">FAIL</button>
       </form>
+    <% }  else { %>
+      <h2>Mission on course</h2>
     <% } %>
 
   </body>
