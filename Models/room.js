@@ -1,3 +1,5 @@
+var Gameplay = require('./gameplay');
+
 function Room(id, player) {
   this.id = id;
   this.owner = player;
@@ -15,6 +17,25 @@ function Room(id, player) {
     this.getCurrentMission().setNewLeader(this.getCurrentLeader())
   }
 
+  this.setupGame = function(){
+    this.phase = 1;
+    this.currentLeaderIndex = 0; //Random
+    this.currentMissionIndex = 0;
+    this.assignRoles();
+    this.setupMissions();
+  }
+
+  this.assignRoles = function(){
+    for (var i=0; i<this.players.length; i++){
+      this.players[i].isLoyal = (i % 2 == 0);
+    }
+  }
+
+  this.setupMissions = function(){
+      this.missions = Gameplay.getMissions(this.players.length);
+      this.missions[0].setLeader(this.owner); //random
+  }
+
   this.getPlayer = function(playerId){
     for(var i=0; i<this.players.length; i++){
       if (this.players[i].id == playerId)
@@ -30,7 +51,7 @@ function Room(id, player) {
   this.getCurrentLeader = function(){
     return this.players[this.currentLeaderIndex];
   }
-  
+
 }
 
 exports.create = function(id, player) {

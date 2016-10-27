@@ -63,19 +63,8 @@ function startGame(req, res, next){
     return next(err);
   }
 
-  room.phase = 1;
-  assignRoles(room.players);
-  room.currentLeaderIndex = 0; //Random
-  var firstLeader = room.getCurrentLeader();
-  room.missions.push(Mission.create(firstLeader));
-  room.currentMissionIndex = 0;
+  room.setupGame();
   res.redirect('/room/' + room.id);
-}
-
-function assignRoles(players){
-  for (var i=0; i<players.length; i++){
-    players[i].isLoyal = (i % 2 == 0);
-  }
 }
 
 function selectAgents(req, res, next){
