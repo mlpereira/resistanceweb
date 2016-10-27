@@ -13,13 +13,20 @@ var Gameplay = {
     var missions = [];
 
     switch(numPlayers) {
+      case 2: {
+        missions[0] = Mission.create(2, 2);
+        missions[1] = Mission.create(2, 2);
+        missions[2] = Mission.create(2, 2);
+        missions[3] = Mission.create(2, 2);
+        missions[4] = Mission.create(2, 2);
+        return missions;
+      }
       case 5: {
         missions[0] = Mission.create(2, 2);
         missions[1] = Mission.create(3, 3);
         missions[2] = Mission.create(2, 2);
         missions[3] = Mission.create(3, 3);
         missions[4] = Mission.create(3, 3);
-        console.log("foi");
         return missions;
       }
 

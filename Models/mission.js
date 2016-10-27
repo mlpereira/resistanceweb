@@ -10,10 +10,13 @@ function Mission(numAgents, votesToApprove){
   }
 
   this.setNewLeader = function(newLeader){
-    this.leader = newLeader;
     this.firstTeam = false;
+    this.lastLeader = this.leader;
     this.lastAgents = this.agents;
     this.lastVotes = this.votes;
+    this.leader = newLeader;
+    this.votes = {};
+    this.agents = [];
   }
 
   this.countApprovals = function(){
