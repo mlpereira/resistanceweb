@@ -28,6 +28,9 @@ function getRoom(req, res, next){
   case 3:
       res.render('phaseThree', {room, player});
       break;
+  case 4:
+      res.render('phaseFour', {room, player});
+      break;
   }
 }
 
@@ -87,9 +90,30 @@ function voteTeam(req, res, next){
     if(mission.countApprovals() > room.players.length / 2){
       room.phase = 3;
     } else {
-      room.changeLeader();
+      room.teamDisapproved();
       room.phase = 1;
     }
+  res.redirect('/room/' + room.id);
+}
+
+function realizeMission(req, res, next){
+  var room = rooms[req.params.roomId];
+  var player = room.getPlayer(req.session.id);
+  var mission = room.getCurrentMission();
+  mission.playersDone++;
+  if (req.body.action == 'fail'){
+    mission.playersFailed++;
+  }
+  if (mission.playersDone == mission.numPlayers){
+    room.phase = 4;
+  }
+  res.redirect('/room/' + room.id);
+}
+
+function nextMission(req, res, next){
+  var room = rooms[req.params.roomId];
+  var player = room.getPlayer(req.session.id);
+  room.nextMission();
   res.redirect('/room/' + room.id);
 }
 
@@ -109,6 +133,8 @@ router.post('/:roomId/joinRoom', joinRoom);
 router.post('/:roomId/startGame', startGame);
 router.post('/:roomId/selectAgents', selectAgents);
 router.post('/:roomId/voteTeam', voteTeam);
+router.post('/:roomId/realizeMission', realizeMission);
+router.post('/:roomId/nextMission', nextMission);
 router.post('/:roomId/addBots', addBots);
 
 module.exports = router;

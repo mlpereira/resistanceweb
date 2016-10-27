@@ -9,16 +9,14 @@
     Player: <%= player.name+' ID: '+player.id+(player.isLoyal ? ' Loyal' : ' Spy') %>
     <% var mission = room.getCurrentMission(); %>
     <fieldset>
-      <h1>TEAM APPROVED</h1>
-      <h2>Agents: </h2>
-      <% for (var i=0; i<mission.agents.length; i++) { %>
-        <h3><%= mission.agents[i].name %></h3>
-      <% } %>
-      <h2>Votes:</h2>
-      <% for (var i=0; i<room.players.length; i++) { %>
-        <% var p = room.players[i]; %>
-        <h3><%= p.name+" "+mission.votes[p.id] %></h3>
-      <% } %>
+        <legend>Mission <%= room.currentMissionIndex+1 %></legend>
+        <h1>TEAM APPROVED</h1>
+        <h3>Leader:</h3>
+        <li><%= mission.leader.name %></li>
+        <h3>Agents:</h3>
+        <% for (var i=0; i<mission.agents.length; i++) { %>
+          <li><%= mission.agents[i].name %></li>
+        <% } %>
     </fieldset>
     <% if (mission.playerIsOnMission(player)) { %>
       <h2>Make the mission Succeed or Fail?</h2>

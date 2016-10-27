@@ -8,16 +8,19 @@
   <body>
     Player: <%= player.name+' ID: '+player.id+(player.isLoyal ? ' Loyal' : ' Spy') %>
     <% var mission = room.getCurrentMission(); %>
+    <% if (!mission.firstTeam) { %>
     <fieldset>
-      <% if (!mission.firstTeam) { %>
-        Team rejected <br>
-        Agents:
+        <legend>Mission <%= room.currentMissionIndex+1 %></legend>
+        <h1>TEAM REJECTED</h1>
+        <h3>Leader:</h3>
+        <li><%= mission.lastLeader.name %></li>
+        <h3>Agents:</h3>
         <% for (var i=0; i<mission.lastAgents.length; i++) { %>
-          <%= mission.lastAgents[i].name %>
+          <li><%= mission.lastAgents[i].name %></li>
         <% } %>
-        <br>
-        <br>
-      <% } %>
+    </fieldset>
+    <% } %>
+    <fieldset>
       <% var leader = room.getCurrentLeader() %>
       <% if (leader.id == player.id) { %>
         You are the leader.
@@ -27,18 +30,23 @@
       <% } %>
     </fieldset>
     <form action=<%= room.id + "/selectAgents" %> method="post">
+      <ul>
       <% for (var i=0; i<room.players.length; i++) { %>
         <% var p = room.players[i]; %>
-        <p>
+        <li>
           <% if (leader.id == player.id) { %>
             <input type="checkbox" name="agents[]" value=<%= i %>>
           <% } %>
           <%= p.name %>
-        </p>
+          <% if (!mission.firstTeam) { %>
+            (Vote for last team: <%= mission.lastVotes[p.id] %>)
+          <% } %>
+        </li>
       <% } %>
       <% if (leader.id == player.id) { %>
         <button type="submit">Confirm Agents</button>
       <% } %>
+    </ul>
     </form>
   </body>
 </html>

@@ -4,12 +4,14 @@ function Mission(numAgents, votesToApprove){
   this.votes = {};
   this.numAgents = numAgents;
   this.votesToApprove = votesToApprove;
+  this.playersDone = 0;
+  this.playersFailed = 0;
 
   this.setLeader = function(leader){
     this.leader = leader;
   }
 
-  this.setNewLeader = function(newLeader){
+  this.teamDisapproved = function(newLeader){
     this.firstTeam = false;
     this.lastLeader = this.leader;
     this.lastAgents = this.agents;
@@ -49,6 +51,6 @@ function Mission(numAgents, votesToApprove){
 
 }
 
-exports.create = function(leader) {
-  return new Mission(leader);
+exports.create = function(numAgents, votesToApprove) {
+  return new Mission(numAgents, votesToApprove);
 }

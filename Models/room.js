@@ -7,6 +7,12 @@ function Room(id, player) {
   this.players.push(player);
   this.phase = 0;
   this.missions = [];
+  this.failedMissions = 0;
+
+  this.teamDisapproved = function(){
+    this.changeLeader();
+    this.getCurrentMission().teamDisapproved(this.getCurrentLeader());
+  }
 
   this.changeLeader = function(){
     if (this.currentLeaderIndex < this.players.length-1){
@@ -14,7 +20,6 @@ function Room(id, player) {
     } else {
       this.currentLeaderIndex = 0;
     }
-    this.getCurrentMission().setNewLeader(this.getCurrentLeader())
   }
 
   this.setupGame = function(){
@@ -33,7 +38,13 @@ function Room(id, player) {
 
   this.setupMissions = function(){
       this.missions = Gameplay.getMissions(this.players.length);
-      this.missions[0].setLeader(this.owner); //random
+      this.missions[0].setLeader(this.getCurrentLeader());
+  }
+
+  this.nextMission = function(){
+    this.changeLeader();
+    room.phase = 1;
+    this.currentMissionIndex++;
   }
 
   this.getPlayer = function(playerId){
