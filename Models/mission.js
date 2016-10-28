@@ -1,6 +1,7 @@
 function Mission(numAgents, votesToApprove){
   this.firstTeam = true;
   this.agents = [];
+  this.badSelect = false;
   this.votes = {};
   this.numAgents = numAgents;
   this.votesToApprove = votesToApprove;
@@ -19,6 +20,7 @@ function Mission(numAgents, votesToApprove){
     this.leader = newLeader;
     this.votes = {};
     this.agents = [];
+    this.badSelect = false;
   }
 
   this.countApprovals = function(){

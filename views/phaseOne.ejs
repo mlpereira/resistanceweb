@@ -24,12 +24,19 @@
       <% var leader = room.getCurrentLeader() %>
       <% if (leader.id == player.id) { %>
         You are the leader.
-        Select who you want to send.
+        Select <b><%= mission.numAgents %></b> agents for the mission.
       <% } else { %>
         Leader <%= leader.name %> is choosing who he is going to send
       <% } %>
     </fieldset>
     <form action="/room/<%= room.id %>/selectAgents" method="post">
+      <% if (leader.id == player.id) {
+            if (mission.badSelect) { %>
+              <div class="error-text">
+                You must select exaclty <b><%= mission.numAgents %></b> agents!
+              </div>
+      <%    }
+        } %>
       <ul>
       <% for (var i=0; i<room.players.length; i++) { %>
         <% var p = room.players[i]; %>
