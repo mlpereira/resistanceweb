@@ -19,7 +19,7 @@
         <% } %>
     </fieldset>
     <% if (leader.id == player.id) { %>
-      <form action=<%= room.id + "/nextMission" %> method="post">
+      <form action="/room/<%= room.id %>/nextMission" %> method="post">
         <button type="submit">NEXT MISSION</button>
       </form>
     <% } %>

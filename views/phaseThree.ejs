@@ -20,7 +20,7 @@
     </fieldset>
     <% if (mission.playerIsOnMission(player)) { %>
       <h2>Make the mission Succeed or Fail?</h2>
-      <form action=<%= room.id + "/realizeMission" %> method="post">
+      <form action="/room/<%= room.id %>/realizeMission" %> method="post">
         <button type="submit" name="action" value="succeed">SUCCEED</button>
         <button type="submit" name="action" value="fail">FAIL</button>
       </form>

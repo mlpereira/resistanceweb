@@ -29,7 +29,7 @@
         Leader <%= leader.name %> is choosing who he is going to send
       <% } %>
     </fieldset>
-    <form action=<%= room.id + "/selectAgents" %> method="post">
+    <form action="/room/<%= room.id %>/selectAgents" method="post">
       <ul>
       <% for (var i=0; i<room.players.length; i++) { %>
         <% var p = room.players[i]; %>

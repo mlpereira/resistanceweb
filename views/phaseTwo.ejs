@@ -24,7 +24,7 @@
       <h2>Waiting other players' votes</h2>
     <% } else { %>
       <h2>Do you approve this team?</h2>
-      <form action=<%= room.id + "/voteTeam" %> method="post">
+      <form action="/room/<%= room.id %>/voteTeam" %> method="post">
         <button type="submit" name="vote" value="yes">Yes</button>
         <button type="submit" name="vote" value="no">No</button>
       </form>

@@ -9,7 +9,7 @@
     <h1>Room <%= room.id %></h1>
 
     <% if (!player) { %>
-      <form action=<%= room.id + "/joinRoom" %> method="post">
+      <form action="/room/<%= room.id %>/joinRoom" %> method="post">
         <label for="name">Your name:&nbsp;&nbsp;&nbsp;</label>
         <input type="text" placeholder="My Name" name="username" />
         <button type="submit">Join Room</button>
