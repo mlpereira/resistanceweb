@@ -72,20 +72,22 @@ function startGame(req, res, next){
 
 function selectAgents(req, res, next){
   var room = rooms[req.params.roomId];
+  var mission = room.getCurrentMission();
   if (!req.body.agents) {
-    room.getCurrentMission().badSelect = true;
+    mission.badSelect = true;
 
     res.redirect('/room/' + room.id);
   }
 
-  if (room.getCurrentMission().numAgents == req.body.agents.length){
+  if (mission.numAgents == req.body.agents.length){
     for (var i = 0; i<req.body.agents.length; i++){
       var agent = room.players[req.body.agents[i]];
-      room.getCurrentMission().agents.push(agent);
+      mission.agents.push(agent);
     }
+    
     room.phase = 2;
   } else {
-    room.getCurrentMission().badSelect = true;
+    mission.badSelect = true;
   }
 
   res.redirect('/room/' + room.id);
