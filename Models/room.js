@@ -43,7 +43,7 @@ function Room(id, player) {
 
   this.nextMission = function(){
     this.changeLeader();
-    room.phase = 1;
+    this.phase = 1;
     this.currentMissionIndex++;
   }
 

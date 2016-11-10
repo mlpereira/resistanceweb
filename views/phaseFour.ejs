@@ -18,7 +18,14 @@
           <li><%= mission.agents[i].name %></li>
         <% } %>
     </fieldset>
-    <% if (leader.id == player.id) { %>
+    <fieldset>
+      <h2>Score: <span class="green"><%= room.currentMissionIndex + 1 - room.failedMissions %></span> - <span class='error-text'><%= room.failedMissions %></span></h2>
+    </fieldset>
+    <% if (room.failedMissions == 3) { %>
+      <h1 class="error-text">GAME OVER! Spies won!</h1>
+    <% } else if (room.currentMissionIndex + 1 - room.failedMissions == 3) { %>
+      <h1 class="green">GAME OVER! Resistance won!</h1>
+    <% } else if (mission.leader.id == player.id){ %>
       <form action="/room/<%= room.id %>/nextMission" %> method="post">
         <button type="submit">NEXT MISSION</button>
       </form>

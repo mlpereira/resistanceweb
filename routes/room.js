@@ -84,7 +84,7 @@ function selectAgents(req, res, next){
       var agent = room.players[req.body.agents[i]];
       mission.agents.push(agent);
     }
-    
+
     room.phase = 2;
   } else {
     mission.badSelect = true;
@@ -112,11 +112,14 @@ function realizeMission(req, res, next){
   var room = rooms[req.params.roomId];
   var player = room.getPlayer(req.session.id);
   var mission = room.getCurrentMission();
-  mission.playersDone++;
+  mission.playersDone[player.id] = true;
   if (req.body.action == 'fail'){
     mission.playersFailed++;
   }
-  if (mission.playersDone == mission.numPlayers){
+  if (Object.keys(mission.playersDone).length == mission.numAgents){
+    if (mission.playersFailed > 0){ // ***
+      room.failedMissions++;
+    }
     room.phase = 4;
   }
   res.redirect('/room/' + room.id);
@@ -126,6 +129,7 @@ function nextMission(req, res, next){
   var room = rooms[req.params.roomId];
   var player = room.getPlayer(req.session.id);
   room.nextMission();
+  room.getCurrentMission().setLeader(room.getCurrentLeader());
   res.redirect('/room/' + room.id);
 }
 

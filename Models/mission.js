@@ -5,7 +5,7 @@ function Mission(numAgents, votesToApprove){
   this.votes = {};
   this.numAgents = numAgents;
   this.votesToApprove = votesToApprove;
-  this.playersDone = 0;
+  this.playersDone = {};
   this.playersFailed = 0;
 
   this.setLeader = function(leader){

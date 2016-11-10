@@ -18,14 +18,16 @@
           <li><%= mission.agents[i].name %></li>
         <% } %>
     </fieldset>
-    <% if (mission.playerIsOnMission(player)) { %>
+    <% if (mission.playerIsOnMission(player) && !mission.playersDone[player.id]){ %>
       <h2>Make the mission Succeed or Fail?</h2>
       <form action="/room/<%= room.id %>/realizeMission" %> method="post">
         <button type="submit" name="action" value="succeed">SUCCEED</button>
         <button type="submit" name="action" value="fail">FAIL</button>
       </form>
+    <% }  else if (mission.playersDone[player.id]) { %>
+      <h2>Waiting other agents</h2>
     <% }  else { %>
-      <h2>Mission on course</h2>
+      <h2>The agents are realizing the mission</h2>
     <% } %>
 
   </body>
