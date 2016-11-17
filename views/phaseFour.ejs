@@ -10,7 +10,12 @@
     <% var mission = room.getCurrentMission(); %>
     <fieldset>
         <legend>Mission <%= room.currentMissionIndex+1 %></legend>
-        <h1>MISSION <%= (mission.playersFailed == 0 ? 'SUCCEEDED' : 'FAILED') %></h1>
+        <% if (mission.playersFailed == 0) { %>
+          <h1 class='green'>MISSION SUCCEEDED %></h1>
+        <% } else { %>
+          <h1 class='error-text'>MISSION FAILED</h1>
+          <h2>Mission failed by <span class='error-text'><%= mission.playersFailed %></span> agent(s).</h2>
+        <% } %>
         <h3>Leader:</h3>
         <li><%= mission.leader.name %></li>
         <h3>Agents:</h3>
