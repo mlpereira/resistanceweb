@@ -65,21 +65,27 @@ function startGame(req, res, next){
     err.status = 404;
     return next(err);
   }
-
-  room.setupGame();
+  if (room.players.length >=5 && room.players.length <= 10) {
+    room.setupGame();
+  } else {
+    room.badStart = true;
+    if (room.players.length == 2) { //DEBUG ONLY!!!
+      room.setupGame();
+    }
+  }
   res.redirect('/room/' + room.id);
 }
 
 function selectAgents(req, res, next){
   var room = rooms[req.params.roomId];
   var mission = room.getCurrentMission();
-  if (!req.body.agents) {
-    mission.badSelect = true;
+  // if (!req.body.agents) {
+  //   mission.badSelect = true;
+  //
+  //   res.redirect('/room/' + room.id);
+  // }
 
-    res.redirect('/room/' + room.id);
-  }
-
-  if (mission.numAgents == req.body.agents.length){
+  if (req.body.agents && mission.numAgents == req.body.agents.length){
     for (var i = 0; i<req.body.agents.length; i++){
       var agent = room.players[req.body.agents[i]];
       mission.agents.push(agent);

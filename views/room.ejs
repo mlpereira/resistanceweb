@@ -20,6 +20,11 @@
         <form action=<%= room.id + "/startGame" %> method="post">
           <button type="submit">Start Game</button>
         </form>
+        <% if (room.badStart) { %>
+          <div class="error-text">
+            The game is for <b>5</b> to <b>10</b> players.
+          </div>
+        <% } %>
         <form action=<%= room.id + "/addBots" %> method="post">
           <button type="submit">Add Bots</button>
         </form>

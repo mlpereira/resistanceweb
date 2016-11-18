@@ -8,6 +8,7 @@ function Room(id, player) {
   this.phase = 0;
   this.missions = [];
   this.failedMissions = 0;
+  this.badStart = false;
 
   this.teamDisapproved = function(){
     this.changeLeader();
