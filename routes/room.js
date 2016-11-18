@@ -79,11 +79,6 @@ function startGame(req, res, next){
 function selectAgents(req, res, next){
   var room = rooms[req.params.roomId];
   var mission = room.getCurrentMission();
-  // if (!req.body.agents) {
-  //   mission.badSelect = true;
-  //
-  //   res.redirect('/room/' + room.id);
-  // }
 
   if (req.body.agents && mission.numAgents == req.body.agents.length){
     for (var i = 0; i<req.body.agents.length; i++){
