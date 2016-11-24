@@ -2,11 +2,13 @@ var Mission = require('./mission');
 
 var Gameplay = {
   getNumSpies: (numPlayers) => {
-    if (numplayers == 5 || numplayers == 6)
+    if (numPlayers == 2) // DEBUG ONLY!!!
+      return 1;
+    if (numPlayers == 5 || numPlayers == 6)
       return 2;
-    if (numplayers >= 7 && numplayers <= 9)
+    if (numPlayers >= 7 && numPlayers <= 9)
       return 3;
-    if (numplayers == 10)
+    if (numPlayers == 10)
       return 4;
   },
   getMissions: (numPlayers) => {

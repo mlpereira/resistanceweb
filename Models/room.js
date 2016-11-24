@@ -32,8 +32,14 @@ function Room(id, player) {
   }
 
   this.assignRoles = function(){
-    for (var i=0; i<this.players.length; i++){
-      this.players[i].isLoyal = (i % 2 == 0);
+    var i = 0;
+    var numSpies = Gameplay.getNumSpies(this.players.length);
+    while (i < numSpies) {
+      var rand = Math.floor(Math.random() * this.players.length);
+      if (this.players[rand].isLoyal) {
+        this.players[rand].isLoyal = false;
+        i++;
+      }
     }
   }
 

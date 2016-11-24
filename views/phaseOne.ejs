@@ -21,7 +21,6 @@
     </fieldset>
     <% } %>
     <fieldset>
-      <legend>Mission <%= room.currentMissionIndex+1 %></legend>
       <% var leader = room.getCurrentLeader() %>
       <% if (leader.id == player.id) { %>
         You are the leader.
