@@ -44,7 +44,7 @@
           <% if (leader.id == player.id) { %>
             <input type="checkbox" name="agents[]" value=<%= i %>>
           <% } %>
-          <%= p.name %>
+          <span class=<%= (!player.isLoyal && !p.isLoyal ? 'error-text' : '') %>><%= p.name %>
           <% if (!mission.firstTeam) { %>
             (Vote for last team: <%= mission.lastVotes[p.id] %>)
           <% } %>
