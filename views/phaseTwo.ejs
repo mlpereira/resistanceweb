@@ -6,27 +6,28 @@
     <link rel="stylesheet" href="/stylesheets/index.css" />
   </head>
   <body>
-    Player: <%= player.name+' ID: '+player.id+(player.isLoyal ? ' Loyal' : ' Spy') %>
+    <h3>Você é <%= (player.isLoyal ? 'da Resistência' : ' Espião') %></h3>
+    <h2>Placar: <span class="green"><%= room.getScore()['resistance'] %></span> - <span class='error-text'><%= room.getScore()['spies'] %></span></h2>
     <% var mission = room.getCurrentMission(); %>
     <fieldset>
-        <legend>Mission <%= room.currentMissionIndex+1 %></legend>
-        <h1>TEAM PENDING APPROVAL</h1>
-        <h3>Leader:</h3>
+        <legend>Missão <%= room.currentMissionIndex+1 %></legend>
+        <h2>EQUIPE SENDO VOTADA</h2>
+        <h3>Líder:</h3>
         <li><%= mission.leader.name %></li>
-        <h3>Agents:</h3>
+        <h3>Agentes:</h3>
         <% for (var i=0; i<mission.agents.length; i++) { %>
           <li><%= mission.agents[i].name %></li>
         <% } %>
     </fieldset>
 
     <% if (mission.playerHasVoted(player)) { %>
-      <h1>You <%= (mission.getPlayerVote(player)=='yes' ? 'Approved' : 'Rejected') %> this team</h1>
-      <h2>Waiting other players' votes</h2>
+      <h1>Você <%= (mission.getPlayerVote(player)=='yes' ? 'Apoiou' : 'Rejeitou') %> esta equipe</h1>
+      <h2>Aguardando votos dos outros jogadores.</h2>
     <% } else { %>
-      <h2>Do you approve this team?</h2>
+      <h2>Você apoia esta equipe?</h2>
       <form action="/room/<%= room.id %>/voteTeam" %> method="post">
-        <button type="submit" name="vote" value="yes">Yes</button>
-        <button type="submit" name="vote" value="no">No</button>
+        <button type="submit" name="vote" value="yes">Sim</button>
+        <button type="submit" name="vote" value="no">Não</button>
       </form>
     <% } %>
 

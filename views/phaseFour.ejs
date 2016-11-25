@@ -6,33 +6,33 @@
     <link rel="stylesheet" href="/stylesheets/index.css" />
   </head>
   <body>
-    Player: <%= player.name+' ID: '+player.id+(player.isLoyal ? ' Loyal' : ' Spy') %>
+    <h3>Você é <%= (player.isLoyal ? 'da Resistência' : ' Espião') %></h3>
     <% var mission = room.getCurrentMission(); %>
     <fieldset>
-        <legend>Mission <%= room.currentMissionIndex+1 %></legend>
+        <legend>Missão <%= room.currentMissionIndex+1 %></legend>
         <% if (mission.playersFailed == 0) { %>
-          <h1 class='green'>MISSION SUCCEEDED %></h1>
+          <h1 class='green'>MISSÃO BEM-SUCEDIDA %></h1>
         <% } else { %>
-          <h1 class='error-text'>MISSION FAILED</h1>
-          <h2>Mission failed by <span class='error-text'><%= mission.playersFailed %></span> agent(s).</h2>
+          <h1 class='error-text'>MISSÃO FRACASSOU</h1>
+          <h2>Missão sabotada por <span class='error-text'><%= mission.playersFailed %></span> agente(s).</h2>
         <% } %>
-        <h3>Leader:</h3>
+        <h3>Líder:</h3>
         <li><%= mission.leader.name %></li>
-        <h3>Agents:</h3>
+        <h3>Agentes:</h3>
         <% for (var i=0; i<mission.agents.length; i++) { %>
           <li><%= mission.agents[i].name %></li>
         <% } %>
     </fieldset>
     <fieldset>
-      <h2>Score: <span class="green"><%= room.currentMissionIndex + 1 - room.failedMissions %></span> - <span class='error-text'><%= room.failedMissions %></span></h2>
+      <h2>Placar: <span class="green"><%= room.getScore()['resistance'] %></span> - <span class='error-text'><%= room.getScore()['spies'] %></span></h2>
     </fieldset>
     <% if (room.failedMissions == 3) { %>
-      <h1 class="error-text">GAME OVER! Spies won!</h1>
+      <h1 class="error-text">FIM DE JOGO! Vitória do ESPIÕES!</h1>
     <% } else if (room.currentMissionIndex + 1 - room.failedMissions == 3) { %>
-      <h1 class="green">GAME OVER! Resistance won!</h1>
+      <h1 class="green">FIM DE JOGO! Vitória da RESISTÊNCIA!</h1>
     <% } else if (mission.leader.id == player.id){ %>
       <form action="/room/<%= room.id %>/nextMission" %> method="post">
-        <button type="submit">NEXT MISSION</button>
+        <button type="submit">PRÓXIMA MISSÃO</button>
       </form>
     <% } %>
 

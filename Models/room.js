@@ -70,6 +70,13 @@ function Room(id, player) {
     return this.players[this.currentLeaderIndex];
   }
 
+  this.getScore = function(){
+    return {
+      'resistance': this.currentMissionIndex - this.failedMissions,
+      'spies': this.failedMissions,
+    }
+  }
+
 }
 
 exports.create = function(id, player) {

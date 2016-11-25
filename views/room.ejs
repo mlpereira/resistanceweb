@@ -6,32 +6,30 @@
     <link rel="stylesheet" href="/stylesheets/index.css" />
   </head>
   <body>
-    <h1>Room <%= room.id %></h1>
+    <h1>Sala <%= room.id %></h1>
 
     <% if (!player) { %>
       <form action="/room/<%= room.id %>/joinRoom" %> method="post">
-        <label for="name">Your name:&nbsp;&nbsp;&nbsp;</label>
-        <input type="text" placeholder="My Name" name="username" />
-        <button type="submit">Join Room</button>
+        <h3>Digite seu nome para entrar na sala</h3>
+        <label for="name">Nome:&nbsp;&nbsp;&nbsp;</label>
+        <input type="text" placeholder="Seu nome" name="username" />
+        <button type="submit">Entrar na sala</button>
       </form>
     <% } else { %>
-      <h3>You are logged in as <%= player.name %></h3>
+      <h3>Você está logado como: <%= player.name %></h3>
       <% if (player == room.owner) { %>
         <form action=<%= room.id + "/startGame" %> method="post">
-          <button type="submit">Start Game</button>
+          <button type="submit">Começar Partida</button>
         </form>
         <% if (room.badStart) { %>
           <div class="error-text">
-            The game is for <b>5</b> to <b>10</b> players.
+            É preciso ter de <b>5</b> a <b>10</b> jogadores para jogar.
           </div>
         <% } %>
-        <form action=<%= room.id + "/addBots" %> method="post">
-          <button type="submit">Add Bots</button>
-        </form>
       <% } %>
     <% }%>
 
-    <h2>Participants(<%= Object.keys(room.players).length %>): %></h2>
+    <h2>Jogadores(<%= Object.keys(room.players).length %>): %></h2>
     <ul>
     <% for (var i=0; i<room.players.length; i++) { %>
         <li><%= room.players[i].name %></li>

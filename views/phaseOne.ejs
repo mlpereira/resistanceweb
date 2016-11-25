@@ -6,15 +6,16 @@
     <link rel="stylesheet" href="/stylesheets/index.css" />
   </head>
   <body>
-    Player: <%= player.name+' ID: '+player.id+(player.isLoyal ? ' Loyal' : ' Spy') %>
+    <h3>Você é <%= (player.isLoyal ? 'da Resistência' : ' Espião') %></h3>
+    <h2>Placar: <span class="green"><%= room.getScore()['resistance'] %></span> - <span class='error-text'><%= room.getScore()['spies'] %></span></h2>
     <% var mission = room.getCurrentMission(); %>
     <% if (!mission.firstTeam) { %>
     <fieldset>
-        <legend>Mission <%= room.currentMissionIndex+1 %></legend>
-        <h1>TEAM REJECTED</h1>
-        <h3>Leader:</h3>
+        <legend>Missão <%= room.currentMissionIndex+1 %></legend>
+        <h2>EQUIPE REPROVADA</h2>
+        <h3>Líder:</h3>
         <li><%= mission.lastLeader.name %></li>
-        <h3>Agents:</h3>
+        <h3>Agentes da missão:</h3>
         <% for (var i=0; i<mission.lastAgents.length; i++) { %>
           <li><%= mission.lastAgents[i].name %></li>
         <% } %>
@@ -23,17 +24,17 @@
     <fieldset>
       <% var leader = room.getCurrentLeader() %>
       <% if (leader.id == player.id) { %>
-        You are the leader.
-        Select <b><%= mission.numAgents %></b> agents for the mission.
+        <b>Você</b> é o líder.
+        Selecione <b><%= mission.numAgents %></b> agentes para enviar à missão.
       <% } else { %>
-        Leader <%= leader.name %> is choosing who he is going to send
+        o líder <b><%= leader.name %></b> está escolhendo quem irá enviar à missão.
       <% } %>
     </fieldset>
     <form action="/room/<%= room.id %>/selectAgents" method="post">
       <% if (leader.id == player.id) {
             if (mission.badSelect) { %>
               <div class="error-text">
-                You must select exaclty <b><%= mission.numAgents %></b> agents!
+                Selecione exatamente <b><%= mission.numAgents %></b> agentes!
               </div>
       <%    }
         } %>
@@ -46,12 +47,12 @@
           <% } %>
           <span class=<%= (!player.isLoyal && !p.isLoyal ? 'error-text' : '') %>><%= p.name %>
           <% if (!mission.firstTeam) { %>
-            (Vote for last team: <%= mission.lastVotes[p.id] %>)
+            (Voto para última equipe: <%= mission.lastVotes[p.id] %>)
           <% } %>
         </li>
       <% } %>
       <% if (leader.id == player.id) { %>
-        <button type="submit">Confirm Agents</button>
+        <button type="submit">Confirmar Agentes</button>
       <% } %>
     </ul>
     </form>

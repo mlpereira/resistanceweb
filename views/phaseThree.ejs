@@ -6,28 +6,29 @@
     <link rel="stylesheet" href="/stylesheets/index.css" />
   </head>
   <body>
-    Player: <%= player.name+' ID: '+player.id+(player.isLoyal ? ' Loyal' : ' Spy') %>
+    <h3>Você é <%= (player.isLoyal ? 'da Resistência' : ' Espião') %></h3>
+    <h2>Placar: <span class="green"><%= room.getScore()['resistance'] %></span> - <span class='error-text'><%= room.getScore()['spies'] %></span></h2>
     <% var mission = room.getCurrentMission(); %>
     <fieldset>
-        <legend>Mission <%= room.currentMissionIndex+1 %></legend>
-        <h1>TEAM APPROVED</h1>
-        <h3>Leader:</h3>
+        <legend>Missão <%= room.currentMissionIndex+1 %></legend>
+        <h1>EQUIPE APROVADA</h1>
+        <h3>Líder:</h3>
         <li><%= mission.leader.name %></li>
-        <h3>Agents:</h3>
+        <h3>Agentes:</h3>
         <% for (var i=0; i<mission.agents.length; i++) { %>
           <li><%= mission.agents[i].name %></li>
         <% } %>
     </fieldset>
     <% if (mission.playerIsOnMission(player) && !mission.playersDone[player.id]){ %>
-      <h2>Make the mission Succeed or Fail?</h2>
+      <h2>CUMPRIR ou SABOTAR a missão?</h2>
       <form action="/room/<%= room.id %>/realizeMission" %> method="post">
-        <button type="submit" name="action" value="succeed">SUCCEED</button>
-        <button type="submit" name="action" value="fail">FAIL</button>
+        <button type="submit" name="action" value="succeed">CUMPRIR</button>
+        <button type="submit" name="action" value="fail">SABOTAR</button>
       </form>
     <% }  else if (mission.playersDone[player.id]) { %>
-      <h2>Waiting other agents</h2>
+      <h2>Aguardando outros agentes</h2>
     <% }  else { %>
-      <h2>The agents are realizing the mission</h2>
+      <h2>Os agentes estão realizando a missão</h2>
     <% } %>
 
   </body>
