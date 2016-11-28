@@ -13,7 +13,15 @@ body {
   padding: 0 20%;
 }
 
+.logo {
+  margin-bottom: 5vh;
+}
+
 @media screen and (max-width: 768px) {
+  .logo {
+    width: 70vw;
+  }
+
   .home-block {
     padding: 0 5%;
   }
