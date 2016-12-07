@@ -6,6 +6,15 @@ var Mission = require('../models/mission');
 
 var rooms = {};
 
+function update(req, res, next){
+  var room = rooms[req.params.roomId];
+  if (room){
+    if (req.query.phase != room.phase){
+      res.send("update");
+    }
+  }
+}
+
 function getRoom(req, res, next){
   var room = rooms[req.params.roomId];
   if (!room) {
@@ -135,6 +144,7 @@ function nextMission(req, res, next){
 }
 
 router.get('/:roomId', getRoom);
+router.get('/:roomId/update', update);
 
 router.post('/', createRoom);
 router.post('/:roomId/joinRoom', joinRoom);
