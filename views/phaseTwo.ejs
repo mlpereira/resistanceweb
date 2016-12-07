@@ -7,7 +7,7 @@
   </head>
   <body>
     <h3>Você é <%= (player.isLoyal ? 'da Resistência' : ' Espião') %></h3>
-    <h2>Placar: <span class="green"><%= room.getScore()['resistance'] %></span> - <span class='error-text'><%= room.getScore()['spies'] %></span></h2>
+    <h2>Placar: <span class='green'><%= room.successfulMissions %></span> - <span class='error-text'><%= room.failedMissions %></span></h2>
     <% var mission = room.getCurrentMission(); %>
     <fieldset>
         <legend>Missão <%= room.currentMissionIndex+1 %></legend>
@@ -21,7 +21,7 @@
     </fieldset>
 
     <% if (mission.playerHasVoted(player)) { %>
-      <h1>Você <%= (mission.getPlayerVote(player)=='yes' ? 'Apoiou' : 'Rejeitou') %> esta equipe</h1>
+      <h1>Você <%= (mission.getPlayerVote(player) ? 'Apoiou' : 'Rejeitou') %> esta equipe</h1>
       <h2>Aguardando votos dos outros jogadores.</h2>
     <% } else { %>
       <h2>Você apoia esta equipe?</h2>

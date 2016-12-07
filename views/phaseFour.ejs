@@ -10,7 +10,7 @@
     <% var mission = room.getCurrentMission(); %>
     <fieldset>
         <legend>Missão <%= room.currentMissionIndex+1 %></legend>
-        <% if (mission.playersFailed == 0) { %>
+        <% if (mission.playersFailed < mission.failsNeeded) { %>
           <h1 class='green'>MISSÃO BEM-SUCEDIDA %></h1>
         <% } else { %>
           <h1 class='error-text'>MISSÃO FRACASSOU</h1>
@@ -24,11 +24,11 @@
         <% } %>
     </fieldset>
     <fieldset>
-      <h2>Placar: <span class="green"><%= room.getScore()['resistance'] %></span> - <span class='error-text'><%= room.getScore()['spies'] %></span></h2>
+      <h2>Placar: <span class='green'><%= room.successfulMissions %></span> - <span class='error-text'><%= room.failedMissions %></span></h2>
     </fieldset>
     <% if (room.failedMissions == 3) { %>
       <h1 class="error-text">FIM DE JOGO! Vitória do ESPIÕES!</h1>
-    <% } else if (room.currentMissionIndex + 1 - room.failedMissions == 3) { %>
+    <% } else if (room.successfulMissions == 3) { %>
       <h1 class="green">FIM DE JOGO! Vitória da RESISTÊNCIA!</h1>
     <% } else if (mission.leader.id == player.id){ %>
       <form action="/room/<%= room.id %>/nextMission" %> method="post">

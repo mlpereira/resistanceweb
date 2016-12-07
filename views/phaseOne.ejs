@@ -7,7 +7,7 @@
   </head>
   <body>
     <h3>Você é <%= (player.isLoyal ? 'da Resistência' : ' Espião') %></h3>
-    <h2>Placar: <span class="green"><%= room.getScore()['resistance'] %></span> - <span class='error-text'><%= room.getScore()['spies'] %></span></h2>
+    <h2>Placar: <span class='green'><%= room.successfulMissions %></span> - <span class='error-text'><%= room.failedMissions %></span></h2>
     <% var mission = room.getCurrentMission(); %>
     <% if (!mission.firstTeam) { %>
     <fieldset>
@@ -45,9 +45,13 @@
           <% if (leader.id == player.id) { %>
             <input type="checkbox" name="agents[]" value=<%= i %>>
           <% } %>
-          <span class=<%= (!player.isLoyal && !p.isLoyal ? 'error-text' : '') %>><%= p.name %>
+          <span class=<%= (!player.isLoyal && !p.isLoyal ? 'error-text' : '') %>><%= p.name %></span>
           <% if (!mission.firstTeam) { %>
-            (Voto para última equipe: <%= mission.lastVotes[p.id] %>)
+            <% if (mission.lastVotes[p.id]) { %>
+              (<span class='green'>Apoiou</span> a última equipe.)
+            <% } else { %>
+              (<span class="error-text">Não apoiou</span> a última equipe.)
+            <% } %>
           <% } %>
         </li>
       <% } %>

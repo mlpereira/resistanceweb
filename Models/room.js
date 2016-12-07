@@ -8,6 +8,7 @@ function Room(id, player) {
   this.phase = 0;
   this.missions = [];
   this.failedMissions = 0;
+  this.successfulMissions = 0;
   this.badStart = false;
 
   this.teamDisapproved = function(){
@@ -52,6 +53,7 @@ function Room(id, player) {
     this.changeLeader();
     this.phase = 1;
     this.currentMissionIndex++;
+    this.getCurrentMission().setLeader(this.getCurrentLeader());
   }
 
   this.getPlayer = function(playerId){
@@ -68,13 +70,6 @@ function Room(id, player) {
 
   this.getCurrentLeader = function(){
     return this.players[this.currentLeaderIndex];
-  }
-
-  this.getScore = function(){
-    return {
-      'resistance': this.currentMissionIndex - this.failedMissions,
-      'spies': this.failedMissions,
-    }
   }
 
 }

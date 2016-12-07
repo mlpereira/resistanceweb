@@ -17,63 +17,63 @@ var Gameplay = {
     switch(numPlayers) {
       case 2: {
         missions[0] = Mission.create(1, 1);
-        missions[1] = Mission.create(2, 2);
+        missions[1] = Mission.create(2, 1);
         missions[2] = Mission.create(1, 1);
         missions[3] = Mission.create(2, 2);
-        missions[4] = Mission.create(2, 2);
+        missions[4] = Mission.create(2, 1);
         return missions;
       }
       case 5: {
-        missions[0] = Mission.create(2, 2);
-        missions[1] = Mission.create(3, 3);
-        missions[2] = Mission.create(2, 2);
-        missions[3] = Mission.create(3, 3);
-        missions[4] = Mission.create(3, 3);
+        missions[0] = Mission.create(2, 1);
+        missions[1] = Mission.create(3, 1);
+        missions[2] = Mission.create(2, 1);
+        missions[3] = Mission.create(3, 1);
+        missions[4] = Mission.create(3, 1);
         return missions;
       }
 
       case 6: {
-        missions[0] = Mission.create(2, 2);
-        missions[1] = Mission.create(3, 3);
-        missions[2] = Mission.create(4, 4);
-        missions[3] = Mission.create(3, 3);
-        missions[4] = Mission.create(4, 4);
+        missions[0] = Mission.create(2, 1);
+        missions[1] = Mission.create(3, 1);
+        missions[2] = Mission.create(4, 1);
+        missions[3] = Mission.create(3, 1);
+        missions[4] = Mission.create(4, 1);
         return missions;
       }
 
       case 7: {
-        missions[0] = Mission.create(2, 2);
-        missions[1] = Mission.create(3, 3);
-        missions[2] = Mission.create(3, 3);
-        missions[3] = Mission.create(4, 3);
-        missions[4] = Mission.create(4, 4);
+        missions[0] = Mission.create(2, 1);
+        missions[1] = Mission.create(3, 1);
+        missions[2] = Mission.create(3, 1);
+        missions[3] = Mission.create(4, 2);
+        missions[4] = Mission.create(4, 1);
         return missions;
       }
 
       case 8: {
-        missions[0] = Mission.create(3, 3);
-        missions[1] = Mission.create(4, 4);
-        missions[2] = Mission.create(4, 4);
-        missions[3] = Mission.create(5, 4);
-        missions[4] = Mission.create(5, 5);
+        missions[0] = Mission.create(3, 1);
+        missions[1] = Mission.create(4, 1);
+        missions[2] = Mission.create(4, 1);
+        missions[3] = Mission.create(5, 2);
+        missions[4] = Mission.create(5, 1);
         return missions;
       }
 
       case 9: {
-        missions[0] = Mission.create(3, 3);
-        missions[1] = Mission.create(4, 4);
-        missions[2] = Mission.create(4, 4);
-        missions[3] = Mission.create(5, 4);
-        missions[4] = Mission.create(5, 5);
+        missions[0] = Mission.create(3, 1);
+        missions[1] = Mission.create(4, 1);
+        missions[2] = Mission.create(4, 1);
+        missions[3] = Mission.create(5, 2);
+        missions[4] = Mission.create(5, 1);
         return missions;
       }
 
       case 10: {
-        missions[0] = Mission.create(3, 3);
-        missions[1] = Mission.create(4, 4);
-        missions[2] = Mission.create(5, 5);
-        missions[3] = Mission.create(5, 4);
-        missions[4] = Mission.create(5, 5);
+        missions[0] = Mission.create(3, 1);
+        missions[1] = Mission.create(4, 1);
+        missions[2] = Mission.create(5, 1);
+        missions[3] = Mission.create(5, 2);
+        missions[4] = Mission.create(5, 1);
         return missions;
       }
     }

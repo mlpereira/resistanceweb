@@ -98,7 +98,7 @@ function voteTeam(req, res, next){
   var room = rooms[req.params.roomId];
   var player = room.getPlayer(req.session.id);
   var mission = room.getCurrentMission();
-  mission.votes[player.id] = req.body.vote;
+  mission.votes[player.id] = (req.body.vote == 'yes');
   if(Object.keys(mission.votes).length == room.players.length)
     if(mission.countApprovals() > room.players.length / 2){
       room.phase = 3;
@@ -118,8 +118,10 @@ function realizeMission(req, res, next){
     mission.playersFailed++;
   }
   if (Object.keys(mission.playersDone).length == mission.numAgents){
-    if (mission.playersFailed > 0){ // ***
+    if (mission.playersFailed >= mission.failsNeeded){ // ***
       room.failedMissions++;
+    } else {
+      room.successfulMissions++;
     }
     room.phase = 4;
   }
@@ -128,18 +130,7 @@ function realizeMission(req, res, next){
 
 function nextMission(req, res, next){
   var room = rooms[req.params.roomId];
-  var player = room.getPlayer(req.session.id);
   room.nextMission();
-  room.getCurrentMission().setLeader(room.getCurrentLeader());
-  res.redirect('/room/' + room.id);
-}
-
-function addBots(req, res, next){
-  var room = rooms[req.params.roomId];
-  for (var i = 1; i <= 4; i++){
-    var bot = Player.create(i, 'BOT'+i);
-    room.players.push(bot);
-  }
   res.redirect('/room/' + room.id);
 }
 
@@ -152,6 +143,5 @@ router.post('/:roomId/selectAgents', selectAgents);
 router.post('/:roomId/voteTeam', voteTeam);
 router.post('/:roomId/realizeMission', realizeMission);
 router.post('/:roomId/nextMission', nextMission);
-router.post('/:roomId/addBots', addBots);
 
 module.exports = router;

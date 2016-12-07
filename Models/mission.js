@@ -1,10 +1,10 @@
-function Mission(numAgents, votesToApprove){
+function Mission(numAgents, failsNeeded){
   this.firstTeam = true;
   this.agents = [];
   this.badSelect = false;
   this.votes = {};
   this.numAgents = numAgents;
-  this.votesToApprove = votesToApprove;
+  this.failsNeeded = failsNeeded;
   this.playersDone = {};
   this.playersFailed = 0;
 
@@ -26,7 +26,7 @@ function Mission(numAgents, votesToApprove){
   this.countApprovals = function(){
     var count = 0;
     for (var vote in this.votes){
-      if (this.votes[vote] == 'yes'){
+      if (this.votes[vote]){
         count++;
       }
     }
